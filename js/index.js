@@ -6,7 +6,7 @@ function updateSubtotal(product) {
   let quantity = product.querySelector('.quantity input');
   let subtotal = product.querySelector('.subtotal span')
   let result = Number(price.innerHTML) * Number(quantity.value);
-  subtotal.innerHTML = `${result}`;
+  subtotal.innerHTML = result;
   return result;
 };
 
@@ -29,7 +29,8 @@ function removeProduct(event) {
   console.log('The target in remove is:', target);
   let product = target.parentNode.parentNode;
   let parent = product.parentNode;
-  parent.removeChild(product)
+  parent.removeChild(product);
+  calculateAll();
 }
 
 // ITERATION 5
@@ -37,7 +38,7 @@ function removeProduct(event) {
 function createProduct() {
   const newProduct = document.querySelectorAll('.create-product input');
   const newProductName = newProduct[0].value;
-  const newProductPrice = newProduct[1].value;
+  const newProductPrice = Number(newProduct[1].value).toFixed(2);
   const createProductRow = document.getElementById('create-product')
   let newRow = document.createElement('tr');
   newRow.setAttribute('class', 'product');
@@ -53,17 +54,20 @@ function createProduct() {
   <button class="btn btn-remove">Remove</button>
 </td>`;
   let parent = document.getElementsByTagName('tbody')[0]
-  parent.appendChild(newRow);
-  parent.insertBefore(newRow, createProductRow);
-}
+  parent.insertBefore(newRow, createProductRow); // OR parent.appendChild(newRow);
+  newProduct[0].value = '0';
+  newProduct[1].value = '0';
+  const removeBtn = newRow.querySelector('.btn-remove');
+  removeBtn.addEventListener('click', removeProduct);
+};
 
 window.addEventListener('load', () => {
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
   const removeBtn = document.getElementsByClassName('btn btn-remove');
   for (i=0; i<removeBtn.length; i++) {
-    removeBtn[i].addEventListener('click', removeProduct);
-  }
+    removeBtn[i].addEventListener('click', removeProduct)};
   const createBtn = document.getElementById('create');
   createBtn.addEventListener('click', createProduct);
 });
+ 
